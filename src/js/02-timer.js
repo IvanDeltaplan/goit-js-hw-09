@@ -34,12 +34,16 @@ const options = {
 };
 
 btnStart.addEventListener("click", () => {
-  timerId = setInterval(() => {
+  const timerId = setInterval(() => {
+    console.log("tik")
     if (outputSelectedDates - new Date() > 0) {
       convertMs(outputSelectedDates - new Date());
+    } else {
+      clearInterval(timerId)
     }
+
   }, 1000);
-  console.log(diff);
+  
 });
 
 flatpickr(timePicker, options);
@@ -52,13 +56,13 @@ function convertMs(ms) {
   const day = hour * 24;
 
   // Remaining days
-  const days = Math.floor(ms / day);
+  const days = addLeadingZero(Math.floor(ms / day));
   // Remaining hours
-  const hours = Math.floor((ms % day) / hour);
+  const hours = addLeadingZero(Math.floor((ms % day) / hour));
   // Remaining minutes
-  const minutes = Math.floor(((ms % day) % hour) / minute);
+  const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
   // Remaining seconds
-  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+  const seconds = addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
 
   //return { days, hours, minutes, seconds };
   outputDays.textContent = days;
@@ -67,4 +71,6 @@ function convertMs(ms) {
   outputSeconds.textContent = seconds;
 }
 
-
+function addLeadingZero(value) {
+  return String(value).padStart(2, '0')
+};
